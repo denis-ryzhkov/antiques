@@ -1,0 +1,86 @@
+Параграф
+4
+<p></p>
+End of tag.
+Заголовок
+5
+<h></h>
+End of tag.
+Абзац
+0
+<br>
+End of tag.
+Линия
+0
+<hr>
+End of tag.
+В точности
+6
+<pre></pre>
+End of tag.
+Цитата
+13
+<blockquote></blockquote>
+End of tag.
+Адрес
+10
+<address></address>
+End of tag.
+Метка
+6
+<a name=""></a>
+End of tag.
+Гиперссылка
+6
+<a href=""></a>
+End of tag.
+Рисунок
+9
+<img src="" alt="">
+End of tag.
+Нумерованный список
+25
+<ol>
+  <li></li>
+  <li></li>
+</ol>
+End of tag.
+НЕнумерован. список
+25
+<ul>
+  <li></li>
+  <li></li>
+</ul>
+End of tag.
+Пункт списка
+5
+  <li></li>
+End of tag.
+Жирный шрифт
+4
+<b></b>
+End of tag.
+Наклонный шрифт
+4
+<i></i>
+End of tag.
+Фиксированный шрифт
+5
+<tt></tt>
+End of tag.
+Фон
+1
+ background=""
+End of tag.
+По центру
+0
+ align="center"
+End of tag.
+Шрифт
+8
+<font></font>
+End of tag.
+  Цвет
+0
+ color="#FF00FF"
+End of tag.

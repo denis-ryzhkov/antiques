@@ -1,0 +1,1 @@
+err2out.exe "err maker\errmaker" "1 a" 2 3 > err.txt

@@ -1,0 +1,83 @@
+#!/usr/bin/perl -I/usr/local/ghd
+use strict;
+use warnings;
+use Ghd;
+fork and exit;
+open_log "scan";
+
+my $tmp_result_fn = "$tmp_dir/scan";
+my $dream	= 5;		# 5 s
+my $too_young	= 60*60;	# 1 h
+my $too_old	= 60*60*24*7*2; # 2 w
+my $too_long	= 60;		# 60 s (per share)
+chdir $smb_dir;
+
+while (1) {
+ sleep $dream;
+ 
+ for (`ls -1rt`) { # from oldest
+  chomp;
+  ( my $mtime = ( stat )[9] ) or next;
+  my $delta = time - $mtime;
+  $delta < $too_young and last;
+  my ( $mac, $ip, $name ) = split /~/;
+  my $db_fn = $_;
+  $ip =~ tr/-/./;
+  unless ( ping $ip ) {
+   if ( $delta > $too_old ) {
+    print_log "- $db_fn";
+    unlink $db_fn;
+   }
+   next;
+  }
+  print_log "scan $db_fn";
+  open STDOUT, ">$tmp_result_fn";
+  chmod 0660, $tmp_result_fn;
+  $name or $name = $ip;
+  my $q_name = quote $name;
+  print "\t\\\\$name\\\n";
+ 
+  SHARE: for ( `$smbclient -L $q_name $tail` ) {
+   /^\s+Server\s+Comment/ and last;
+   /^\s+(.+?)\s+Disk/ or next;
+   my $share = $1;
+   for ( $share ) { /^[A-Za-z]\$$/ || /^ADMIN\$$/i || /^[\s\?]*$/ and next SHARE }
+   print "\t\\\\$name\\$share\\\n";
+  
+   eval {
+    $SIG{ALRM} = sub { die ": timeout\n" };
+    alarm $too_long;
+    my $dir = "";
+    open SHARE,
+      "$smbclient ".quote("//$name/$share")." -c 'recurse; ls' $tail |";
+    while (<SHARE>) {
+     my ( $fn, $size ) = ("","");
+     if ( /^\\/ ) {
+      /^[\s\\]+$/ || /\\\\/ and die ": bad subdir name\n";
+      chomp;
+      $dir = $_;
+     } else {
+      ( $fn, my $attr, $size ) = /^  (.+)(.{7})(.{9}).{26}$/ or next;
+      $attr =~ /D/ and next;
+      $fn =~ s/\s+$//;
+      ( $fn eq "" or $fn =~ /\?/ ) and next;
+      $size =~ s/\s+//;
+     }
+     print "$size\t\\\\$name\\$share$dir\\$fn\n";
+    }
+    alarm 0;
+   };
+   if ( $@ ) {
+    $@ =~ /^:/ or die $@;
+    chomp $@;
+    print_log "share $share$@";
+   }
+   close SHARE;
+  }
+  
+  close STDOUT;
+  rename $tmp_result_fn, $db_fn;
+  chmod 0664, $db_fn; # for killed by gh-scoutd
+  print_log "done";
+  last;
+}}

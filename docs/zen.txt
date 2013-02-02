@@ -1,0 +1,28 @@
+software engineering zen, version 1 from 2010-06-16 (c) Denis Ryzhkov
+
+1. abstracts decomposition.
+imagine your software idea as few high-level linked abstracts.
+then imagine one of this high-level abstracts as few next-level linked abstracts.
+and so on until low-level strings of code or their equivalent.
+this is like atomic cosmos nature, or like multi-level constructor.
+
+1. bicycle abstracts.
+each of your abstracts is potential bicycle with octagonal wheels,
+that would be much cooler than all those square-wheeled bicycles.
+search and use ready round-wheeled bicycles.
+they can be found in your already-used-technologies documentation, or in internet.
+
+1. minimal interface abstracts.
+links between abstracts must be minimal, strictly defined and documented.
+abstract implementation can be as complex as it is needed.
+in this way this complexity (your real enemy) is imprisoned inside and won't hurt you.
+and you can easily replace one abstract with another, making your system flexible.
+
+1. dry abstracts.
+don't repeat yourself.
+"Every piece of knowledge must have a single, unambiguous, authoritative representation within a system."
+code is knowledge. data is knowledge. abstract is one thing instead of many similar things.
+best working abstract is not-existing abstract. "entities must not be multiplied beyond necessity".
+
+
+Inspired by "zen of python: import this", and similar manifests.

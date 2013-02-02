@@ -1,0 +1,220 @@
+Параграф
+4
+<p></p>
+.
+Заголовок
+4
+<h></h>
+.
+Абзац
+0
+<br>
+.
+Линия
+0
+<hr>
+.
+В точности
+6
+<pre></pre>
+.
+Комментарий
+4
+<!--  -->
+.
+Метка
+6
+<a name=""></a>
+.
+Гиперссылка
+4
+<a href=""></a>
+.
+Рисунок
+9
+<img src="" alt="">
+.
+  Параметры рисунка
+0
+ align="center" border="0"
+.
+Нумерованный список
+25
+<ol>
+  <li></li>
+  <li></li>
+</ol>
+.
+НЕнумерованный список
+0
+<ul>
+<li></li>
+<li></li>
+</ul>
+.
+  Пункт списка
+5
+  <li></li>
+.
+Жирный шрифт
+4
+<b></b>
+.
+Наклонный шрифт
+4
+<i></i>
+.
+Подчёркнутый шрифт
+4
+<u></u>
+.
+Фиксированный шрифт
+5
+<tt></tt>
+.
+Фон..
+1
+ background="" bgcolor="#000000" text="#ff0000" link="#ee00ee" vlink="#c90092" alink="#00ff00"
+.
+По центру
+0
+ align="center"
+.
+Шрифт
+7
+<font></font>
+.
+  Имя
+1
+ face=""
+.
+  Цвет
+0
+ color="#FF00FF"
+.
+  Размер
+1
+ size=""
+.
+Форма с сохранением
+7
+<form method="post" action="--webbot-self--"><!--webbot bot="SaveResults" U-File="_private/formrslt.txt" S-Format="TEXT/CSV"  S-Label-Fields="TRUE" --></form>
+.
+Форма
+7
+<form method="" action=""></form>
+.
+  Редактор-строка
+10
+<input type="text" name="" size="">
+.
+  Редактор-поле
+29
+<textarea name="" rows="" cols=""></textarea>
+.
+  Флажок
+20
+<input type="checkbox" name="" value="on" checked>
+.
+  Радио-флажок
+19
+<input type="radio"  name="" value="" checked>
+.
+  Список
+81
+<select name="" size="">
+  <option value=""></option>
+  <option value=""></option>
+</select>
+.
+    Пункт списка
+11
+  <option value=""></option>
+.
+  Кнопка
+11
+<input type="button" name="" value="">
+.
+    Смещение
+0
+&nbsp
+.
+  Подтвердить
+11
+<input type="submit" name="" value="">
+.
+  Сбросить
+11
+<input type="reset" name="" value="">
+.
+Таблица
+0
+<table border="5" width="100%" height="58" bordercolor="#000000" 
+cellspacing="1" cellpadding="0" bordercolorlight="#a0a0a0" bordercolordark="#606060"
+bgcolor="#808080">
+  <tr>
+    <td width="50%" height="27">1</td>
+    <td width="50%" height="27">2</td>
+  </tr>
+  <tr>
+    <td width="33%" height="19">3</td>
+    <td width="33%" height="19">4</td>
+    <td width="34%" height="19">5</td>
+  </tr>
+</table>
+.
+  Ряд (горизонтальный)
+0
+<tr>
+<td width="50%">1</td>
+<td width="50%">1</td>
+</tr>
+.
+  Деление ряда
+0
+    <td width="100%" height="27">1</td>
+.
+   Соединение (вертик.)
+1
+ rowspan=""
+.
+   Соединение (гориз.)
+1
+ colspan=""
+.
+Вставить файл
+5
+<!-- #include virtual="" -->
+.
+Выполнить файл
+5
+<!-- #exec virtual="" -->
+.
+Цитата
+13
+<blockquote></blockquote>
+.
+Адрес
+10
+<address></address>
+.
+Верхний индекс
+6
+<sup></sup>
+.
+Teкстовые атрибы
+0
+<style TYPE="text/css">
+<!--
+      A:link     {text-decoration: none}
+      A:visited  {text-decoration: none}
+      A:active   {text-decoration: none}
+      A:hover    {color: "#00ff00";}
+    -->
+</style>
+
+.
+Бегущая строка
+10
+<marquee width=""></marquee>
+.

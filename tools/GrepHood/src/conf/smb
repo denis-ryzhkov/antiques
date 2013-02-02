@@ -1,0 +1,5 @@
+include = /etc/samba/smb.conf
+[global]
+dos charset = CP866
+unix charset = CP1251
+display charset = CP1251

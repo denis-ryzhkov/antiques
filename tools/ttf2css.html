@@ -1,0 +1,20 @@
+<script>
+    function ttf2css(file_input) {
+        var reader = new FileReader();
+        reader.onloadend = function(event) {
+            document.getElementById('output').innerHTML = (
+                '@font-face {\n' +
+                '  font-family: \'MyFont\';\n' +
+                '  src: url(' +
+                        event.target.result
+                        .replace('data:base64,', 'data:font/truetype;charset=utf-8;base64,') +
+                    ');\n' +
+                '}'
+            );
+        };
+        // .replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '')
+        reader.readAsDataURL(file_input.files[0]);
+    };
+</script>
+<input type="file" onchange="ttf2css(this)" />
+<pre id="output"></pre>

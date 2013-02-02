@@ -1,0 +1,73 @@
+#!/usr/bin/perl -I/usr/local/ghd
+use strict;
+use warnings;
+use locale;		$ENV{LC_ALL} = "ru_RU.CP1251";
+use POSIX 'locale_h';	setlocale( LC_ALL, "ru_RU.CP1251" );
+use Ghd;
+
+my $pid = `$pidof -x gh-filmsd`;
+$pid =~ s/\b$$\b//; $pid =~ s/\s//m; $pid and exit;
+open_log "films";
+sub file_exists( $ );
+my $start_time = time;
+my $min_size		= 100_000_000;
+my $min_special_size	= 300_000_000;
+my %films = ();
+my $result_fn	 	= "$cat_dir/films";
+my $tmp_result_fn	= "$tmp_dir/films";
+chdir $smb_dir;
+
+#### collect
+
+while (<*>) {
+ my ( $db_mac, $db_ip, $db_name ) = split /~/;
+ $db_name or $db_name = "";
+ $db_name eq "relonger" and next;
+ $db_ip =~ tr/-/./;
+ ping $db_ip or next;
+ open FILE, $_;
+ while (<FILE>) {
+  my ( $size, $fn ) = split /\t/;
+  $size && $size >= $min_size			or next;
+  $fn =~ /\.(avi|dat|mpg|mpeg|rm)$/i		or next;
+  $fn !~ /(game|\bcs|q3|айкидо|clip|клип|con.ert|концерт|anim|аним|toon|mult|мульт|porn|порн|porev|порев|shit|xxx)/i		or next;
+  $fn !~ /^\\\\(lg|biskup|elbro|svita|tantan|bird|yoghurt)\\/i
+   || $size >= $min_special_size		or next;
+  file_exists $fn				or next;
+  my ( $path, $title, $ext ) = $fn =~ /^(.*\\)(.*)(\..+)$/;
+  push @{ $films{ $title }}, [ $path, $title, $ext ];
+ }
+ close FILE;
+}
+
+#### output
+
+my $groups_count = 0;
+open STDOUT, ">$tmp_result_fn";
+for my $title ( sort keys %films ) {
+$groups_count++;
+ my $is_first = 1;
+ for my $parts ( @{ $films{ $title }}) {
+  my ( $path, $title, $ext ) = @{ $parts };
+  my $spaces = 60 - length $path;
+  $spaces <= 0 and $spaces = 1;
+  ( my $q_path = $path ) =~ s/\\/\//g;
+  print qq{  <a href="file:$q_path">$path</a>};
+  print( ( $is_first? "`" : " " ) x $spaces );
+  $is_first = 0;
+  print qq{<a href="file:$q_path$title$ext">$title</a>\r\n};
+}}
+print "\r\n  Всего различных фильмов: $groups_count\r\n";
+close STDOUT;
+rename $tmp_result_fn, $result_fn;
+chmod 0664, $result_fn;
+print_log "done in less than ".int( 1 + ( time - $start_time ) / 60 )." min.";
+
+#### file_exists
+
+sub file_exists( $ ) {
+ my ( $name_share, $dir, $fn ) = shift =~ /^(\\\\.+?\\.+?)\\(.+\\)?(.+)$/;
+ defined $dir or $dir = "";
+ my $what = ( quote $name_share )." -D ".( quote $dir )." -c ls $tail";
+ return `$smbclient $what` =~ /^  \Q$fn\E\s+.{42}$/m;
+}

@@ -1,0 +1,14 @@
+GrepHood install notes.
+
+1) To recover names from numeric uids and gids note that there was:
+uid	gid	name	comment
+1003	1003	ghd	user without home and shell
+	1006	fami	web-site developers
+1005	1005	creon	GrepHood developer, at ghd and fami groups
+
+2) GH was developed with perl 5.8.3, maybe requires less.
+check Ping.pm is installed or install Net-Ping-2.31.tar.gz.
+
+3) Check assigned pathes in: Ghd.pm, gh-*d first line, conf/smb, www/gh/*.php, init/ghd, install scripts.
+
+4) Use install scripts in next order: var_lib, cron, init, www.

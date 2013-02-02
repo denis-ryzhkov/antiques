@@ -1,0 +1,3 @@
+#include "resource.h"
+IDI_ABSINTH ICON DISCARDABLE "rc/absinth.ico"
+IDB_BMP BITMAP DISCARDABLE "rc/bmp.bmp"

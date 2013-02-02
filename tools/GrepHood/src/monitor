@@ -1,0 +1,10 @@
+#!/bin/bash
+
+clear
+ps -Af | grep gh
+VAR_DIR='/var/lib/ghd'
+tail -n 4 $VAR_DIR/log/gh-viewd
+tail -n 4 $VAR_DIR/log/gh-filmsd
+tail -n 4 $VAR_DIR/log/gh-scoutd
+tail -n 4 $VAR_DIR/log/gh-scand
+tail -n 4 $VAR_DIR/tmp/scan

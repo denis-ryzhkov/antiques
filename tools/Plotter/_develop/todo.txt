@@ -1,0 +1,15 @@
++) better setPixel
++) repaint only if selected
++) dont repaint if finished plot and painted
++) tabs with controls
++) one timer repaint
++) use x1, x2, step
++) auto scale
++) new tab on start
++) more optimize repaint
++) extremums, zeroes
++) checkbox for ^
+
+0) copy settings from last active tab
+0) syntax error and hang handle
+0) synchronized, etc

@@ -1,0 +1,66 @@
+<<TableOfContents()>>
+
+= tabl =
+
+`tabl` — это кастомный тип, которого мне очень не хватало в `python`-е, вынуждая каждый раз комбинировать списки и словари, указывать одно и то же много раз.
+
+Цель `tabl` — простое и удобное создание таблиц значений с множеством колонок и манипуляция ими.
+
+Он уже поддерживает:
+    * Cтрогий контроль названия колонок,
+        ~-(чтобы уменьшить ошибки из-за очепяток)-~.
+    * Значения колонок по умолчанию,
+        ~-(для `DRY`)-~.
+    * Добавление и обновление рядов с позиционной и именной связью между значением и колонкой,
+        ~-(для выбора между `DRY` и явным)-~.
+    * Доступ к значениям двумя способами:
+        * Как к атрибутам: `.attr` .
+        * По ключу: `[key]` .
+    * Унаследованные от списка рядов и словаря внутри ряда возможности, например:
+        * Итерация по рядам.
+        * Форматирование с помощью ряда и даже его разворачивание через `**`.
+    * Простой доступ к ряду или рядам по фильтру, заданному позиционно и поимённо,
+        ~-(аналогично добавлению рядов)-~.
+    * Прототипы и быстрые пресеты структуры таблицы.
+
+В планах:
+    * Больше `CRUD` по рядам и колонкам.
+    * Больше поддержки операторов и спец-методов `python`-а вроде `__eq__`.
+    * `SQL`-подобные методы: `where`, `group`, `order` и т.д.
+    * Возможность определить `primary key` (возможно из нескольких колонок) для работы как со словарём: авто-замена по первичному ключу, хэшированный поиск по рядам.
+    * Возможно использовать `namedtuple` вместо `dict` в Python>=2.6.
+    * `PEP` )
+
+Пример использования:
+{{{#!highlight python numbers=disable
+t = tabl('title, description, is_deleted', is_deleted=False,
+).add('title1', 'descr1', True,
+).add('title2', 'descr2',
+).add('title3', 'descr3', is_deleted=True,
+).add(description='descr4', title='title4',
+)
+
+for row in t:
+    if row.is_deleted:
+        row.description = '<deleted>'
+    for column, value in something:
+        row[column] = value
+    print('%(title)s: %(description)s, is deleted: %(is_deleted)s.' % row)
+    print('combined with %(foreign)s: %(title)s - %(description)s' % dict(foreign='something', **row)
+
+print(t.get('title2', is_deleted=False).description)
+for row in t.filter('title2', is_deleted=False):
+    print(row.desription)
+
+for row in tabl:
+    row.update('<deleted>', is_deleted=True)
+
+tabbar = tabl('id, url, name', name='unknown')
+t = tabbar.copy()
+
+tabl.preset('tabbar', 'id, url, name', name='unknown')
+t = tabl.preset('tabbar')
+}}}
+
+См. так же `docstring`-и в модуле `tabl`, там есть ещё некоторые методы.
+

@@ -1,0 +1,46 @@
+#!/usr/bin/perl -I/usr/local/ghd
+use strict;
+use warnings;
+use Ghd;
+open_log "scout";
+
+my ( $my_mac ) = `$ifconfig` =~ /HWaddr (\S+)/;
+chdir $smb_dir;
+open IPS, "$nmblookup '*' |";
+while ( <IPS> ) {
+ my ( $ip ) = /([\d+\.]+)/ or next;
+ if ( ping $ip ) {
+  my $mac = $my_mac;
+  `$arp -a $ip` =~ / at (\S+) \[/ and $mac = $1;
+  $mac =~ tr/:/-/;
+  my $name = 
+    `$nmblookup -A $ip` =~ /^\s*(IS~)?([\w\-]+)\s*<00> - [^<]/m ?
+    lc $2 : "";
+  my $add = 1;
+  while (<*>) {
+   my ( $db_mac, $db_ip, $db_name ) = split /~/;
+   $db_name or $db_name = "";
+   $db_ip =~ tr/-/./;
+   if (
+    $db_name eq $name || !$name and # leave last known name
+    $db_mac eq $mac and
+    $db_ip eq $ip || ping $db_ip # skip multiple ips of one host
+   ) {
+    $add = 0;
+   } elsif (
+    $db_mac eq $mac or
+    $db_ip eq $ip or
+    $db_name eq $name && $name
+   ) {
+    print_log "-\t$db_mac\t$db_ip\t$db_name";
+    unlink;
+  }}
+  if ( $add ) {
+   print_log "+\t$mac\t$ip\t$name";
+   $ip =~ tr/./-/;
+   my $db_fn = "$mac~$ip~$name";
+   system "$touch ".quote( $db_fn );
+   chmod 0664, $db_fn;
+}}}
+close IPS;
+print_log "done";

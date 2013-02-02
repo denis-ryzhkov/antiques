@@ -1,0 +1,23 @@
+[TARGET]
+POLYGLOSSUM-II, pgw.exe (93,952)
+
+[CRACK]
+00006002: 71
+
+[DESCRIPTION]
+Kills "CLOSE or MINIMIZE and continue to use?" dialog.
+
+[ORIGINAL]
+00006002: 75
+
+[MEANING]
+When you try to close PGW, it tests window with "ISICONIC" function
+and _if_ window isn't minimized (iconic) PGW shows undesirable dialog.
+Crack replaces "jne" with "jno" macking PGW not to use the results of 
+"ISICONIC" function.
+
+[CRACKED BY]
+Sabour.
+Local Time 14.01.2001 00:24.
+Tools: IDA, HIEW, FAR.
+Music: Garbage.

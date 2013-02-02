@@ -1,0 +1,87 @@
+#!/usr/bin/perl -I/usr/local/ghd
+use strict;
+use warnings;
+use locale;		$ENV{LC_ALL} = "ru_RU.CP1251";
+use POSIX 'locale_h';	setlocale( LC_ALL, "ru_RU.CP1251" );
+use Ghd;
+open_log "view";
+
+#### main
+
+$| = 1;
+print "$$\r\n";
+my $needle = substr( shift @ARGV, 0, 128 );
+my $found_count = 0;
+chdir $smb_dir;
+
+my $area = "";
+$needle =~ /^(.+?):(.*)/ and ( $area, $needle ) = ( $1, $2 );
+my $q_needle = "";
+if ( $needle =~ /\*/ ) {
+ for ( $q_needle = $needle ) {
+  s/([(.$)\[\]{|}^?+\\])/\\$1/g;
+  s/\*/.*/g;
+ }
+ $q_needle = " ".quote( $q_needle );  
+} else { $q_needle = "F ".quote( $needle ) }
+
+open LINES, "grep -ih$q_needle *$area 2>/dev/null |";
+while ( <LINES> ) {
+ chomp;
+ my ( $size, $dir_file ) = split /\t/;
+ $found_count++;
+ if ( $size eq "" ) { print "        &lt;dir&gt;    " }
+ else { printf "%13s    ", group3 $size }
+ my ( $dir, $file ) = $dir_file =~ /^(.+\\)(.*)$/;
+ my $q_dir = quote_url $dir;
+ print qq{<a href="file:$q_dir">$dir</a>};
+ $file ne "" and print qq{<a href="file:$q_dir}.quote_url( $file ).qq{">$file</a>};
+ print "\r\n";
+}
+close LINES;
+
+print "\r\nВсего найдено результатов: ", group3 $found_count, "\r\n\r\n";
+
+#### translit
+
+my $has_translit = 0;
+
+if ( $needle =~ /[а-яА-ЯёЁ]/ ) {
+ for ( $needle ) {
+  s/[ъь]//ig;
+  tr/абвгдезийклмнопрстуфхыэ/abvgdeziyklmnoprstufhye/;
+  tr/АБВГДЕЗИЙКЛМНОПРСТУФХЫЭ/ABVGDEZIYKLMNOPRSTUFHYE/;
+  s/ё/yo/g;	s/Ё/YO/g;
+  s/ж/zh/g;	s/Ж/ZH/g;
+  s/ц/ts/g;	s/Ц/TS/g;
+  s/ч/ch/g;	s/Ч/CH/g;
+  s/ш/sh/g;	s/Ш/SH/g;
+  s/щ/sch/g;	s/Щ/SCH/g;
+  s/ю/yu/g;	s/Ю/YU/g;
+  s/я/ya/g;	s/Я/YA/g;
+ }
+ $has_translit = 1;
+} elsif ( $needle =~ /[a-zA-Z]/ ) {
+ for ( $needle ) {
+  s/yo/ё/g;	s/YO/Ё/g;
+  s/zh/ж/g;	s/ZH/Ж/g;
+  s/ts/ц/g;	s/TS/Ц/g;
+  s/ch/ч/g;	s/CH/Ч/g;
+  s/sh/ш/g;	s/SH/Ш/g;
+  s/sch/щ/g;	s/SCH/Щ/g;
+  s/yu/ю/g;	s/YU/Ю/g;
+  s/ya/я/g;	s/YA/Я/g;
+  s/th/с/g;	s/TH/С/g;
+  s/ph/ф/g;	s/PH/Ф/g;
+  s/j/дж/g;	s/J/ДЖ/g;
+  s/x/кс/g;	s/X/КС/g;
+  tr/abcdefghiklmnopqrstuvwyz/абкдефгхиклмнопкрстуввйз/;
+  tr/ABCDEFGHIKLMNOPQRSTUVWYZ/АБКДЕФГХИКЛМНОПКРСТУВВЙЗ/;
+ }
+ $has_translit = 1;
+}
+
+if ( $has_translit ) {
+ $area ne "" and $needle = "$area:$needle";
+ print qq{Найти транслит: <a href="/?gh=$needle">$needle</a>\r\n\r\n};
+}

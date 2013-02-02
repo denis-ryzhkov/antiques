@@ -1,0 +1,15 @@
+<!--!! text-files only -->
+
+<button style="behavior:url( '#default#download' )" onclick="startDownload( '/download_test', on_download_done )">Download</button>
+
+<script language="JavaScript">
+ <!--
+  function on_download_done( content ) { 
+   var fso = new ActiveXObject( "Scripting.FileSystemObject" );
+   var f = fso.CreateTextFile( "c:\\download_test", true ); // overwrite
+   f.Write( content );
+   f.Close();
+   alert( "Download complete." );
+  }
+ -->
+</script>

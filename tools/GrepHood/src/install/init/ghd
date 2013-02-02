@@ -1,0 +1,43 @@
+#!/bin/sh
+
+DAEMON=/usr/local/ghd/gh-scand
+test -x $DAEMON || exit 0
+TITLE='GrepHood scan daemon'
+PID="pidof -x $DAEMON"
+
+case "$1" in
+
+	start)
+		echo -n "Starting $TITLE:"
+		$PID >/dev/null || start-stop-daemon --start --quiet \
+			--chuid ghd --nicelevel 19 --exec $DAEMON
+		echo "."
+		;;
+		
+	stop)
+		echo -n "Stopping $TITLE:"
+		kill `$PID` 1>&2 2>/dev/null
+		echo "."
+		;;
+		
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+
+	status)
+		echo -n "$TITLE is "
+		if $PID >/dev/null
+		then echo -n "running"
+		else echo -n "stopped"
+		fi
+		echo "."
+		;;
+		
+	*)
+		echo "Usage: /etc/init.d/ghd {start|stop|restart|status}"
+		exit 1
+		;;
+esac
+exit 0

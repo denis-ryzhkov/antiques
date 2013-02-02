@@ -1,0 +1,2 @@
+#!/bin/sh
+cp -rp gh /var/www/vhosts/fami/private/
