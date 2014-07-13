@@ -1,0 +1,7 @@
+...
++) Found that "sorted()" was not a bottleneck at all!
++) freeze this project until _sort_ becomes bottleneck
+0) try int()
+0) try (-value, ...), key=none, reverse
+0) no pickle, unix sort, then sort -m, LC_ALL=C, -S80%
+0) pypi w/stats

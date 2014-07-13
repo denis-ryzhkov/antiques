@@ -1,0 +1,28 @@
+
+# 1-core netbook:
+TOTAL=46.8923, min=20.1752, fetch=13.9396, append=12.7774, init=0.0001
+TOTAL=50.1260, merge_sorted=46.8941, map=1.9223, chunks=0.8746, pool=0.4350, processes=0.0000
+TOTAL=51.5092, multicore_sorted=50.2555, sorted=1.2537
+
+# 8-core server (but used only 3 cores because of hardcode, alas):
+TOTAL=21.9860, min=9.1511, fetch=6.5855, append=6.2493, init=0.0001
+TOTAL=23.4539, merge_sorted=21.9863, map=0.6414, chunks=0.4597, pool=0.3664, processes=0.0000
+TOTAL=24.2223, multicore_sorted=23.6068, sorted=0.6156
+
+# no profiling inside "merge_sorted()":
+TOTAL=5.3736, merge_sorted=3.9150, map=0.5709, chunks=0.5034, pool=0.3843, processes=0.0000
+TOTAL=6.1465, multicore_sorted=5.5249, sorted=0.6217
+
+# 4M items
+TOTAL=22.3093, merge_sorted=16.5434, map=2.3202, chunks=1.9191, pool=1.5266, processes=0.0000
+TOTAL=25.6254, multicore_sorted=22.9302, sorted=2.6952
+
+# timsort
+TOTAL=7.5387, map=2.5676, pool=2.4761, chunks=1.9679, test_timsort=0.5270, test_import=0.0001, processes=0.0000
+TOTAL=11.2368, multicore_sorted=8.2668, sorted=2.9700
+
+# All 8 cores:
+TOTAL=6.3206, chunks=2.0110, pool=2.0020, map=1.5865, test_timsort=0.7207, processes=0.0002, test_import=0.0001
+TOTAL=9.4754, multicore_sorted=6.7999, sorted=2.6755
+
+# Found that "sorted()" was not a bottleneck at all!
