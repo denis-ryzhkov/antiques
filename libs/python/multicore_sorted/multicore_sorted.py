@@ -1,6 +1,26 @@
 """
->>> NOTE: Found that "sorted()" was not a bottleneck at all,
-so this project is frozen, probably forever. See also "drafts" dir.
+---STORY:
+
+* Epic story of implementing multi-core merge-sort.
+
+* I found that "merge" algorithm in Python is 30x slower
+than "timsort" algorithm of C builtin "sorted(chain(*presorted_chunks))".
+
+* This "timsort" is optimized for "almost-sorted" data,
+so given pre-sorted chunks it executed 6x faster than initial "sorted(raw_data)"!
+
+* However the process of splitting to chunks together with multiprocessing overhead
+made "multicore_sorted()" still 2x slower than plain single-core builtin "sorted()".
+
+* Then I got the next idea: "is "sorted()" a bottleneck, to start with?!".
+* I added more profiling and found that "sorted()" was not a bottleneck AT ALL!
+
+* (facepalm)
+
+* So I freezed this "multicore_sorted" project until sorting really becomes a bottleneck:
+https://github.com/denis-ryzhkov/antiques/tree/master/libs/python/multicore_sorted
+
+---FROZEN:
 
 Builtin "sorted()" function, but using all CPU cores available for speedup!
 
